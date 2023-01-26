@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-conversao
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: web-conversao
+  template:
+    metadata:
+      labels:
+        app: web-conversao
+    spec:
+      containers:
+        - name: web-conversao
+          image: enzogms/conversao-temperatura:v2
+          # a versão do v2 foi feita apenas para teste
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-conversao
+spec:
+  selector:
+    app: web-conversao
+  ports:
+    - port: 80
+      targetPort: 8080
+      nodePort: 30000
+  type: NodePort
